@@ -8,7 +8,7 @@ import Select from '../Select';
 
 export function ContactList() {
 
-    const { contacts, deleteContact, listTodo } = useContact();
+    const { contacts, deleteContact, listTodo, listUserId } = useContact();
     const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
 
@@ -19,7 +19,7 @@ export function ContactList() {
 
 
     async function handleOpenEditTransactionModal(data: any) {
-        await listTodo("", "", data.id)
+        listUserId(data.id);
         setIsEditTransactionModalOpen(true);
     }
 
@@ -42,8 +42,6 @@ export function ContactList() {
         }else {
             await listTodo(category, data, "")
         }
-
-        
     }
 
 

@@ -20,7 +20,7 @@ function App() {
 
   return (
     <ContactContextProvider>
-      <main>
+
         <Header />
         <ButtonCreate onOpenNewContactModal={handleOpenNewTransactionModal} />
         <CreateModal
@@ -29,7 +29,6 @@ function App() {
         />
         
         <ContactList />
-      </main>
     </ContactContextProvider>
   )
 }

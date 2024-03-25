@@ -12,7 +12,8 @@ type Contact = {
 }
 type ContactContextData = {
   contacts: Contact[];
-  contactsEdit: Contact[];
+  contactEdit: any;
+  listUserId: (id: string) => Promise<void>;
   createContact: (transaction: Contact) => Promise<void>;
   editContact: (transaction: Contact) => Promise<void>;
   deleteContact: (id: string) => Promise<void>;
@@ -30,45 +31,42 @@ export const ContactContext = createContext({} as ContactContextData);
 export function ContactContextProvider({ children }: ContactContextProviderProps) {
 
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [contactsEdit, setContactsEdit] = useState<Contact[]>([]);
-
-  async function listTodo(category: string, sort: string, idEdit: string) {
-
-    if(idEdit !== "") {
-      await api.get(`/contacts?id=${idEdit}`)
-      .then(response => setContactsEdit(response.data))
-    }else {
+  const [contactEdit, setContactEdit] = useState<any>();
+  async function listTodo(category: string, sort: string) {
       await api.get(`/contacts?${category && 'category=' + category}${sort && '&name_like=' + sort}`)
       .then(response => setContacts(response.data))
-    }
-
   }
 
   useEffect(() => {
 
-    listTodo('', '', '');
+    listTodo('', '');
 
   }, []);
 
+  async function listUserId(id: string) {
+    await api.get(`/contacts?id=${id}`)
+    .then(response => setContactEdit(response.data))
+}
+
   async function createContact(transactionInput: ContactInput) {
     await api.post('/contacts', transactionInput)
-    listTodo('', '', '');
+    listTodo('', '');
   }
 
   async function editContact(transactionInput: Contact) {
     await api.put(`/contacts/${transactionInput.id}`, transactionInput)
-    listTodo('', '', '');
+    listTodo('', '');
   }
 
   async function deleteContact(id: string) {
     await api.delete(`/contacts/${id}`)
-    listTodo('', '', '');
+    listTodo('', '');
   }
 
 
 
   return (
-    <ContactContext.Provider value={{ contacts, contactsEdit, listTodo, createContact, editContact, deleteContact }}>
+    <ContactContext.Provider value={{ contacts, listTodo, contactEdit, listUserId, createContact, editContact, deleteContact }}>
       {children}
     </ContactContext.Provider>
   )

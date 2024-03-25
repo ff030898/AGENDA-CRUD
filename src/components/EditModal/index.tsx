@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import closeImage from "../../assets/close.svg";
 import Modal from "react-modal";
@@ -17,7 +17,7 @@ interface NewContactModalOpen {
 export function EditModal({ isOpen, onRequestClose }: NewContactModalOpen) {
 
     const mask = "(99) 99999-9999";
-    const { editContact, contactsEdit } = useContact();
+    const { editContact, contactEdit } = useContact();
 
     const [id, setID] = useState('');
     const [name, setName] = useState('');
@@ -27,6 +27,25 @@ export function EditModal({ isOpen, onRequestClose }: NewContactModalOpen) {
     const [category, setCategory] = useState('');
     const [createdAt, setCreatedAt] = useState(new Date());
     const [errors, setErrors] = useState('');
+
+    function listEdit() {
+
+        if(contactEdit?.length > 0){
+            let {id, name, telP, telC, telT, category} = contactEdit[0]
+            setID(id)
+            setName(name)
+            setTelP(telP)
+            setTelC(telC)
+            setTelT(telT)
+            setCategory(category)
+        }
+       
+    }
+
+    useEffect(() => {
+        listEdit()
+    }, [contactEdit])
+
 
     function handleEditNewContact(event: FormEvent) {
 
@@ -86,59 +105,49 @@ export function EditModal({ isOpen, onRequestClose }: NewContactModalOpen) {
             </button>
             <form className={styles.modalContainer} onSubmit={handleEditNewContact}>
 
-                {contactsEdit.map((contact: any) => {
-                    return (
-                        <div key={contact.id}>
+                <input placeholder="Nome" value={name} onChange={event => setName(event.target.value)} />
 
-                            <input placeholder="Nome" value={contact.name} onChange={event => setName(event.target.value)} />
+                <InputMask
+                    mask={mask}
+                    placeholder="Telefone Principal"
+                    onChange={event => {
 
-                            <InputMask
-                                mask={mask}
-                                placeholder="Telefone Principal"
-                                onChange={event => {
+                        setTelP(event.target.value)
+                    }
+                    }
+                    value={telP}
+                >
+                </InputMask>
 
-                                    setTelP(event.target.value)
-                                }
-                                }
-                                value={contact.telP}
-                            >
-                            </InputMask>
+                <InputMask
+                    mask={mask}
+                    placeholder="Telefone Casa"
+                    type="text" value={telC}
+                    onChange={event => setTelC(event.target.value)}
+                >
+                </InputMask>
 
-                            <InputMask
-                                mask={mask}
-                                placeholder="Telefone Casa"
-                                type="text" value={contact.telC}
-                                onChange={event => setTelC(event.target.value)}
-                            >
-                            </InputMask>
+                <InputMask
+                    mask={mask}
+                    placeholder="Telefone Trabalho"
+                    type="text" value={telT}
+                    onChange={event => setTelT(event.target.value)}
+                >
+                </InputMask>
 
-                            <InputMask
-                                mask={mask}
-                                placeholder="Telefone Trabalho"
-                                type="text" value={contact.telT}
-                                onChange={event => setTelT(event.target.value)}
-                            >
-                            </InputMask>
+                <Select
+                    name="subject"
+                    label="Grupo"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    options={[
+                        { value: "Familia", label: "Familia" },
+                        { value: "Amigos", label: "Amigos" },
+                        { value: "Parentes", label: "Parentes" },
+                        { value: "Trabalho", label: "Trabalho" },
 
-                            <Select
-                                name="subject"
-                                label="Grupo"
-                                value={contact.category}
-                                onChange={(e) => setCategory(e.target.value)}
-                                options={[
-                                    { value: "Familia", label: "Familia" },
-                                    { value: "Amigos", label: "Amigos" },
-                                    { value: "Parentes", label: "Parentes" },
-                                    { value: "Trabalho", label: "Trabalho" },
-
-                                ]}
-                            />
-
-
-                        </div>
-                    );
-                })}
-
+                    ]}
+                />
 
                 <button type="submit">Salvar</button>
                 <p className='errors-text'>{errors}</p>
