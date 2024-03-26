@@ -6,6 +6,7 @@ import { ButtonCreate } from './components/ui/Button/Button';
 import { useState } from 'react';
 import { CreateModal } from './components/CreateModal';
 
+
 function App() {
 
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] = useState(false);
@@ -16,7 +17,9 @@ function App() {
 
   function handleCloseNewTransactionModal() {
     setIsNewTransactionModalOpen(false);
+   
   }
+
 
   return (
     <ContactContextProvider>

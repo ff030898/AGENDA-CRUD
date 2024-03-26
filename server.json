@@ -7,7 +7,7 @@
       "telC": "(13) 95622-5218",
       "telT": "(13) 95622-5218",
       "category": "Amigos",
-      "createdAt": "2024-03-25T06:43:08.643Z"
+      "createdAt": "2024-03-25T19:46:35.481Z"
     },
     {
       "id": "f02d62f1-74ee-493a-8fd6-e733dcb381c9",
@@ -26,6 +26,15 @@
       "telT": "(13) 96532-1456",
       "category": "Parentes",
       "createdAt": "2024-03-25T19:00:38.670Z"
+    },
+    {
+      "id": "e5c3f2e0-fe0a-419a-a611-e59e254e3e9f",
+      "name": "Eusebio",
+      "telP": "(13) 90000-0000",
+      "telC": "(13) 90000-0000",
+      "telT": "(13) 90000-0000",
+      "category": "Trabalho",
+      "createdAt": "2024-03-25T19:32:10.013Z"
     }
   ]
 }
