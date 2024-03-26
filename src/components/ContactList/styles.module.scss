@@ -15,6 +15,24 @@
             margin-left: 1rem;
         }
 
+        input[type=search] {
+            width: 350px;
+            border: none;
+        }
+    
+        div[class=content-s] {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        div[class=search-div] {
+          border: 1px solid #000;
+          padding: 0.2rem;
+          padding-right: 1rem;
+          
+        }
+
+
     }
 
 
@@ -37,7 +55,7 @@
 
     td button {
         border-radius: 8px;
-        padding: 0.2rem;
+        padding: 0.125rem;
     }
 
 }

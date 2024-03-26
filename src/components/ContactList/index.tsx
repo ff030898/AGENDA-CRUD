@@ -2,10 +2,10 @@ import styles from './styles.module.scss';
 import { useContact } from '../../hooks/useContacts';
 import { EditModal } from '../EditModal';
 import { useState } from 'react';
-import { BsArchiveFill, BsFillPencilFill } from "react-icons/bs";
-import Select from '../Select';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { MdDelete } from "react-icons/md";
+import { FaSearch } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+import Select from '../ui/Select';
 
 
 export function ContactList() {
@@ -31,15 +31,15 @@ export function ContactList() {
     }
 
     function handleDeleteContact(id: string) {
-        const notify = () => toast.success("Contato removido com sucesso!");
         let text = "Tem certeza que deseja excluir este contato? ";
         if (confirm(text) == true) {
             deleteContact(id);
-            notify();
+            alert("Contato removido com sucesso!");
         }
     }
 
     async function handleFilter(data: string, type: string) {
+
         if (type === 'category') {
             await listTodo(data, search, "")
             setSort('')
@@ -55,14 +55,13 @@ export function ContactList() {
             await listTodo(category, data, "")
             setSort('')
         }
+
     }
 
 
     return (
 
         <>
-            <ToastContainer />
-
             <EditModal
                 isOpen={isEditTransactionModalOpen}
                 onRequestClose={handleCloseEditTransactionModal}
@@ -104,15 +103,19 @@ export function ContactList() {
 
 
                     </div>
-                    <div>
+                    <div className='content-s'>
                         <label htmlFor="search">Pesquisar: </label>
+                        <div className='search-div'>
                         <input
                             onChange={(e) => { setSearch(e.target.value), handleFilter(e.target.value, 'search') }}
-                            type="text"
+                            type="search"
                             name="search"
                             id="search"
                             className='search'
-                            placeholder='Pesquisar' />
+                            placeholder='Pesquisar' >
+                            </input>
+                            <FaSearch className='icon' />
+                        </div>
                     </div>
                 </header>
 
@@ -138,20 +141,13 @@ export function ContactList() {
                                     <td>{contact.telT}</td>
                                     <td>{contact.category}</td>
                                     <td>{new Intl.DateTimeFormat('pt-BR').format(new Date(contact.createdAt))}</td>
-                                    <td><button type='button' title="Editar" onClick={() => handleOpenEditTransactionModal(contact)}><BsFillPencilFill className="ml-4" size={20} /></button> <button type='button' title="Remover" onClick={() => handleDeleteContact(contact.id)}><BsArchiveFill className="ml-4" size={20} /></button></td>
-
+                                    <td><button type='button' className="button-edit" title="Editar" onClick={() => handleOpenEditTransactionModal(contact)}><MdEdit className="ml-4" size={18} /></button> <button type='button' className="button-remove" title="Remover" onClick={() => handleDeleteContact(contact.id)}><MdDelete className="ml-4" size={18} /></button></td>
                                 </tr>
                             );
                         })}
 
                     </tbody>
-
-
                 </table>
-
-
-
-
             </div>
         </>
     )

@@ -6,9 +6,7 @@ import { useContact } from '../../hooks/useContacts';
 import { v4 as uuidv4 } from 'uuid';
 import * as yup from "yup";
 import InputMask from 'react-input-mask';
-import Select from '../Select';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Select from '../ui/Select';
 
 
 interface NewContactModalOpen {
@@ -30,9 +28,6 @@ export function CreateModal({ isOpen, onRequestClose }: NewContactModalOpen) {
     const [errors, setErrors] = useState('');
 
     function handleCreateNewContact(event: FormEvent) {
-
-        const notify = () => toast.success("Cadastro realizado com sucesso!");
-        const notifyWarning = () => toast.warning("Preencha todos os campos corretamente!");
 
         setErrors('')
 
@@ -67,12 +62,12 @@ export function CreateModal({ isOpen, onRequestClose }: NewContactModalOpen) {
                     setTelC('');
                     setTelT('');
                     setCategory('');
-                    notify();
+                    alert("Cadastro realizado com sucesso!");
                     onRequestClose();
                     setErrors('')
                 } else {
                     event.preventDefault();
-                    notifyWarning();
+                    alert("Preencha todos os campos corretamente!");
                     setErrors('Preencha todos os campos corretamente*')
                 }
 
@@ -82,10 +77,6 @@ export function CreateModal({ isOpen, onRequestClose }: NewContactModalOpen) {
     }
 
     return (
-
-        <>
-            <ToastContainer />
-
             <Modal
                 isOpen={isOpen}
                 onRequestClose={onRequestClose}
@@ -133,7 +124,7 @@ export function CreateModal({ isOpen, onRequestClose }: NewContactModalOpen) {
 
                     <Select
                         name="subject"
-                        label="Grupo"
+                        label=""
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                         options={[
@@ -149,7 +140,5 @@ export function CreateModal({ isOpen, onRequestClose }: NewContactModalOpen) {
                     <p className='errors-text'>{errors}</p>
                 </form>
             </Modal>
-        </>
-
     )
 }

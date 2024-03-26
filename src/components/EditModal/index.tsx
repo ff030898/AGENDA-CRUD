@@ -5,9 +5,7 @@ import Modal from "react-modal";
 import { useContact } from '../../hooks/useContacts';
 import * as yup from "yup";
 import InputMask from 'react-input-mask';
-import Select from '../Select';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Select from '../ui/Select';
 
 
 interface NewContactModalOpen {
@@ -51,9 +49,6 @@ export function EditModal({ isOpen, onRequestClose }: NewContactModalOpen) {
 
     function handleEditNewContact(event: FormEvent) {
 
-        const notify = () => toast.success("Alterações salvas com sucesso!");
-        const notifyWarning = () => toast.warning("Preencha todos os campos corretamente!");
-
         let data = {
             id,
             name,
@@ -86,87 +81,79 @@ export function EditModal({ isOpen, onRequestClose }: NewContactModalOpen) {
                     setTelT('');
                     setCategory('');
                     setCreatedAt(new Date());
-                    notify();
+                    alert("Alterações salvas com sucesso!");
                     onRequestClose();
                     setErrors('')
                 } else {
                     event.preventDefault();
-                    notifyWarning();
-                    setErrors('Preencha todos os campos corretamente*')
+                    alert("Preencha todos os campos corretamente!");
+                    setErrors('Preencha todos os campos corretamente*');
                 }
 
             });
 
     }
 
-
     return (
+        <Modal
+            isOpen={isOpen}
+            onRequestClose={onRequestClose}
+            overlayClassName="react-modal-overlay"
+            className={"react-modal-content"}>
 
-        <>
-            <ToastContainer autoClose={1000} />
+            <h2>Editar Contato</h2>
+            <button type="button" onClick={onRequestClose}>
+                <img src={closeImage} alt="Fechar" className="react-modal-close" />
+            </button>
+            <form className={styles.modalContainer} onSubmit={handleEditNewContact}>
 
-            <Modal
-                isOpen={isOpen}
-                onRequestClose={onRequestClose}
-                overlayClassName="react-modal-overlay"
-                className={"react-modal-content"}>
+                <input placeholder="Nome" value={name} onChange={event => setName(event.target.value)} />
 
-                <h2>Editar Contato</h2>
-                <button type="button" onClick={onRequestClose}>
-                    <img src={closeImage} alt="Fechar" className="react-modal-close" />
-                </button>
-                <form className={styles.modalContainer} onSubmit={handleEditNewContact}>
+                <InputMask
+                    mask={mask}
+                    placeholder="Telefone Principal"
+                    onChange={event => {
 
-                    <input placeholder="Nome" value={name} onChange={event => setName(event.target.value)} />
+                        setTelP(event.target.value)
+                    }
+                    }
+                    value={telP}
+                >
+                </InputMask>
 
-                    <InputMask
-                        mask={mask}
-                        placeholder="Telefone Principal"
-                        onChange={event => {
+                <InputMask
+                    mask={mask}
+                    placeholder="Telefone Casa"
+                    type="text" value={telC}
+                    onChange={event => setTelC(event.target.value)}
+                >
+                </InputMask>
 
-                            setTelP(event.target.value)
-                        }
-                        }
-                        value={telP}
-                    >
-                    </InputMask>
+                <InputMask
+                    mask={mask}
+                    placeholder="Telefone Trabalho"
+                    type="text" value={telT}
+                    onChange={event => setTelT(event.target.value)}
+                >
+                </InputMask>
 
-                    <InputMask
-                        mask={mask}
-                        placeholder="Telefone Casa"
-                        type="text" value={telC}
-                        onChange={event => setTelC(event.target.value)}
-                    >
-                    </InputMask>
+                <Select
+                    name="subject"
+                    label=""
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    options={[
+                        { value: "Familia", label: "Familia" },
+                        { value: "Amigos", label: "Amigos" },
+                        { value: "Parentes", label: "Parentes" },
+                        { value: "Trabalho", label: "Trabalho" },
 
-                    <InputMask
-                        mask={mask}
-                        placeholder="Telefone Trabalho"
-                        type="text" value={telT}
-                        onChange={event => setTelT(event.target.value)}
-                    >
-                    </InputMask>
+                    ]}
+                />
 
-                    <Select
-                        name="subject"
-                        label="Grupo"
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        options={[
-                            { value: "Familia", label: "Familia" },
-                            { value: "Amigos", label: "Amigos" },
-                            { value: "Parentes", label: "Parentes" },
-                            { value: "Trabalho", label: "Trabalho" },
-
-                        ]}
-                    />
-
-                    <button type="submit">Salvar</button>
-                    <p className='errors-text'>{errors}</p>
-                </form>
-            </Modal>
-
-        </>
-
+                <button type="submit">Salvar</button>
+                <p className='errors-text'>{errors}</p>
+            </form>
+        </Modal>
     )
 }
