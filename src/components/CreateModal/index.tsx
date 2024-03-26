@@ -67,7 +67,6 @@ export function CreateModal({ isOpen, onRequestClose }: NewContactModalOpen) {
                     setErrors('')
                 } else {
                     event.preventDefault();
-                    alert("Preencha todos os campos corretamente!");
                     setErrors('Preencha todos os campos corretamente*')
                 }
 
